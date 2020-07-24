@@ -1,0 +1,20 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## user2020 Causal Inference Workshop
+
+### Slides
+
+* [03 Introduction to Propensity Scores]()
+* [04 Using Propensity Scores (Matching)]()
+* [05 Checking Propensity Scores]()
