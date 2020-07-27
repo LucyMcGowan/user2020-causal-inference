@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 # Using Propensity Scores
 ### Lucy D’Agostino McGowan
 ### Wake Forest University
-### 2016/12/12 (updated: 2020-07-24)
+### 2016/12/12 (updated: 2020-07-27)
 
 ---
 
@@ -33,11 +33,79 @@ class: center, middle, inverse, title-slide
 
 ## Propensity scores
 
-* Weighting
-* **Matching**
+* **Weighting**
+* Matching
 * Stratification
 * Direct Adjustment
 * ...
+
+---
+
+## Target estimands
+
+* Average Treatment Effect (ATE)
+  * `\(w_{ATE} = \frac{Z_i}{p_i} + \frac{1-Z_i}{1 - p_i}\)`
+
+---
+
+## Target estimands
+
+* Average Treatment Effect Among the Treated (ATT)
+  * `\(w_{ATT} = \frac{p_i Z_i}{p_i} + \frac{p_i (1-Z_i)}{1-p_i}\)`
+--
+
+* Average Treatment Effect Among the Controls (ATC)
+  * `\(w_{ATC} = \frac{(1-p_i)Z_i}{p_i} + \frac{(1-epi)(1-Z_i)}{(1-p_i)}\)`
+
+---
+
+## Target estimands
+
+* Average Treatment Effect Among the Evenly Matchable (ATM)
+  * `\(w_{ATM} = \frac{\min \{p_i, 1-p_i\}}{z_ip_i + (1-Z_i)(1-p_i)}\)`
+--
+
+* Average Treatment Effect Among the Overlap Population
+  * `\(w_{ATO} = (1-p_i)Z_i + p_i(1-Z_i)\)`
+
+---
+
+
+
+## Histogram of propensity scores
+
+![](04-using-pscores_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+---
+
+## ATE
+
+![](04-using-pscores_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+
+## ATT
+
+
+![](04-using-pscores_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+
+---
+
+## ATC
+
+![](04-using-pscores_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+---
+
+## ATM
+
+![](04-using-pscores_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+---
+
+## ATO
+
+![](04-using-pscores_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

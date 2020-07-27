@@ -90,10 +90,9 @@ $$Pr(exposure = 1) = \frac{1}{1+\exp(-X\beta)}$$
 
 ## Propensity scores
 
-```{r, eval = FALSE}
-glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ..., 
-    data = df,
-    family = binomial)
+```{r, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(broom)
 ```
 
 ---
@@ -103,9 +102,7 @@ glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ...,
 ```{r, eval = FALSE}
 glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ..., 
     data = df,
-    family = binomial) %>%
-predict(type = "response") #<<
-
+    family = binomial())
 ```
 
 ---
@@ -113,10 +110,21 @@ predict(type = "response") #<<
 ## Propensity scores
 
 ```{r, eval = FALSE}
-p <- glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ..., 
-         data = df,
-         family = binomial) %>%
-     predict(type = "response")
+glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ..., 
+    data = df,
+    family = binomial()) %>%
+  augment(type.predict = "response", data = df) 
+```
+
+---
+
+## Propensity scores
+
+```{r, eval = FALSE}
+glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ..., 
+    data = df,
+    family = binomial()) %>%
+  augment(type.predict = "response", data = df) #<<
 ```
 
 ---
@@ -126,5 +134,9 @@ p <- glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ...,
 ![](img/pscores.png)
 
 ---
+
+## Your turn
+
+
 
 
