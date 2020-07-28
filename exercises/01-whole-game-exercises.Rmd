@@ -12,7 +12,6 @@ library(ggdag)
 library(cidata)
 library(survey)
 library(tableone)
-
 ```
 
 ## Causal Modeling: Whole Game

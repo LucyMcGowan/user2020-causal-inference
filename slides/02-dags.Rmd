@@ -192,7 +192,7 @@ dagify(
 ### Plot the DAG using `ggdag()`
 ---
 
-## Your Turn 1 (`exercises.Rmd`)
+## Your Turn 1 (`02-dags-exercises.Rmd`)
 
 ```{r}
 coffee_cancer_dag <- dagify(
@@ -390,7 +390,7 @@ cancer ~ coffee + smoking
 
 ---
 
-class: inverse, center
+class: inverse
 
 # Resources: ggdag vignettes
 ## [An Introduction to ggdag](https://ggdag.malco.io/articles/intro-to-ggdag.html)
