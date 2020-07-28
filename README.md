@@ -5,8 +5,15 @@
 
 ### Slides
 
+  - [00 Intro](https://user2020.lucymcgowan.com/00-intro.html)
+  - [01 Whole
+    Game](https://user2020.lucymcgowan.com/01-causal_modeling_whole_game.html)
+  - [02 Causal Diagrams](https://user2020.lucymcgowan.com/02-dags.html)
   - [03 Introduction to Propensity
-    Scores](https://htmlpreview.github.io/?https://github.com/LucyMcGowan/user2020-causal-inference/blob/master/slides/03-pscores.html)
-  - [04 Using Propensity Scores
-    (Matching)](https://htmlpreview.github.io/?https://github.com/LucyMcGowan/user2020-causal-inference/blob/master/slides/04-using-pscores.html)
-  - [05 Checking Propensity Scores]()
+    Scores](https://user2020.lucymcgowan.com/03-pscores.html)
+  - [04 Using Propensity
+    Scores](https://user2020.lucymcgowan.com/04-pscore-weighting.html)
+  - [05 Checking Propensity
+    Scores](https://user2020.lucymcgowan.com/05-pscore-diagnostics.html)
+  - [06 Fitting the outcome
+    model](https://user2020.lucymcgowan.com/06-outcome-model.html)
