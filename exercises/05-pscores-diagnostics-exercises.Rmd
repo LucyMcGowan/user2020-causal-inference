@@ -1,5 +1,5 @@
 ---
-title: "Propensity Score Weighting"
+title: "Propensity Score Diagnostics"
 output: html_document
 ---
 
