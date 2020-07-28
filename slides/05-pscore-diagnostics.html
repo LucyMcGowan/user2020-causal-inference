@@ -6,9 +6,9 @@
     <meta name="author" content="Lucy D’Agostino McGowan" />
     <script src="libs/header-attrs-2.3/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/lucy.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/lucy-fonts.css" rel="stylesheet" />
-    <link rel="stylesheet" href="my.css" type="text/css" />
+    <link href="libs/countdown-0.3.5/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown-0.3.5/countdown.js"></script>
+    <link rel="stylesheet" href="theme.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -17,21 +17,23 @@ class: center, middle, inverse, title-slide
 # Propensity Score Diagnostics
 ### Lucy D’Agostino McGowan
 ### Wake Forest University
-### 2016/12/12 (updated: 2020-07-27)
+### 2020-07-29 (updated: 2020-07-28)
 
 ---
 
 
 
 
+
+class: inverse
 
 ## Checking balance
 
 * Love plots (Standardized Mean Difference)
-* Box plots
 * ECDF plots
 
 ---
+class: inverse
 
 ## Standardized Mean Difference (SMD)
 
@@ -41,7 +43,7 @@ class: center, middle, inverse, title-slide
 
 ## SMD in R
 
-1. Create a "design object" to incorporate the weights
+&lt;span class = "num"&gt;1&lt;/span&gt; &lt;h3&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp;  &amp;nbsp; Create a "design object" to incorporate the weights &lt;/h3&gt; 
 
 
 ```r
@@ -58,7 +60,8 @@ svy_des &lt;- svydesign(
 
 ## SMD in R
 
-2. Calculate the _unweighted_ standardized mean differences
+&lt;span class = "num"&gt;2&lt;/span&gt; &lt;h3&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp;  &amp;nbsp; Calculate the unweighted standardized mean differences &lt;/h3&gt; 
+
 
 
 ```r
@@ -76,7 +79,7 @@ smd_table_unweighted &lt;- CreateTableOne(
 
 ## SMD in R
 
-3. Calculate the _weighted_ standardized mean differences
+&lt;span class = "num"&gt;3&lt;/span&gt; &lt;h3&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp;  &amp;nbsp; Calculate the weighted standardized mean differences &lt;/h3&gt; 
 
 
 ```r
@@ -91,7 +94,7 @@ smd_table &lt;- svyCreateTableOne(
 
 ## SMD in R
 
-3. Calculate the _weighted_ standardized mean differences
+&lt;span class = "num"&gt;3&lt;/span&gt; &lt;h3&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp;  &amp;nbsp; Calculate the weighted standardized mean differences &lt;/h3&gt; 
 
 
 ```r
@@ -106,7 +109,8 @@ smd_table &lt;- svyCreateTableOne(
 
 ## SMD in R
 
-4. Stick these together in a data frame
+&lt;span class = "num"&gt;4&lt;/span&gt; &lt;h3&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp;  &amp;nbsp;  Stick these together in a data frame &lt;/h3&gt; 
+
 
 
 ```r
@@ -121,7 +125,8 @@ plot_df &lt;- data.frame(
 
 ## SMD in R
 
-4. Stick these together in a data frame
+&lt;span class = "num"&gt;4&lt;/span&gt; &lt;h3&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp;  &amp;nbsp;  Stick these together in a data frame &lt;/h3&gt; 
+
 
 
 ```r
@@ -139,8 +144,8 @@ rownames(EXtractSMD(smd_table))
 
 ## SMD in R
 
+&lt;span class = "num"&gt;4&lt;/span&gt; &lt;h3&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp;  &amp;nbsp;  Stick these together in a data frame &lt;/h3&gt; 
 
-4. Stick these together in a data frame
 
 
 ```r
@@ -158,8 +163,8 @@ as.numeric(ExtractSmd(smd_table_unweighted))
 
 ## SMD in R
 
+&lt;span class = "num"&gt;4&lt;/span&gt; &lt;h3&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp;  &amp;nbsp;  Stick these together in a data frame &lt;/h3&gt; 
 
-4. Stick these together in a data frame
 
 
 ```r
@@ -177,8 +182,8 @@ as.numeric(ExtractSmd(smd_table))
 
 ## SMD in R
 
+&lt;span class = "num"&gt;4&lt;/span&gt; &lt;h3&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp;  &amp;nbsp;  Stick these together in a data frame &lt;/h3&gt; 
 
-4. Stick these together in a data frame
 
 
 ```r
@@ -193,7 +198,8 @@ plot_df &lt;- data.frame(
 
 ## SMD in R
 
-5. Plot them! (in a Love plot!)
+&lt;span class = "num"&gt;5&lt;/span&gt; &lt;h3&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp;  &amp;nbsp;  Plot them! (in a Love plot!) &lt;/h3&gt; 
+
 
 
 ```r
@@ -209,7 +215,8 @@ ggplot(data = plot_df,
 
 ## SMD in R
 
-5. Plot them! (in a Love plot!)
+&lt;span class = "num"&gt;5&lt;/span&gt; &lt;h3&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp;  &amp;nbsp;  Plot them! (in a Love plot!) &lt;/h3&gt; 
+
 
 
 ```r
@@ -226,7 +233,8 @@ ggplot(data = plot_df,
 
 ## SMD in R
 
-5. Plot them! (in a Love plot!)
+&lt;span class = "num"&gt;5&lt;/span&gt; &lt;h3&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp;  &amp;nbsp;  Plot them! (in a Love plot!) &lt;/h3&gt; 
+
 
 
 ```r
@@ -243,7 +251,8 @@ ggplot(data = plot_df,
 
 ## SMD in R
 
-5. Plot them! (in a Love plot!)
+&lt;span class = "num"&gt;5&lt;/span&gt; &lt;h3&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp;  &amp;nbsp;  Plot them! (in a Love plot!) &lt;/h3&gt; 
+
 
 
 ```r
@@ -261,7 +270,8 @@ ggplot(data = plot_df,
 
 ## SMD in R
 
-5\. Plot them! (in a Love plot!)
+&lt;span class = "num"&gt;5&lt;/span&gt; &lt;h3&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp;  &amp;nbsp;  Plot them! (in a Love plot!) &lt;/h3&gt; 
+
 
 
 ```r
@@ -279,7 +289,8 @@ ggplot(data = plot_df,
 
 ## SMD in R
 
-&lt;ol start="5"&gt; Plot them! (in a Love plot!) &lt;/ol&gt;
+
+&lt;span class = "num"&gt;5&lt;/span&gt; &lt;h3&gt; &amp;nbsp; &amp;nbsp; &amp;nbsp;  &amp;nbsp;  Plot them! (in a Love plot!) &lt;/h3&gt; 
 
 
 ```r
@@ -298,13 +309,19 @@ ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = M
 
 ---
 
-## Your turn!
+## Your turn 1
+
+<div class="countdown" id="timer_5f206a69" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+1. Create a Love Plot for the propensity score weighting you created in the previous exercise
 
 ---
 
 ## ECDF
 
-* For continuous variables, it can be helpful to look at the _whole_ distribution pre and post-weighting rather than a single summary measure
+For continuous variables, it can be helpful to look at the _whole_ distribution pre and post-weighting rather than a single summary measure
 
 ![](05-pscore-diagnostics_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
 
@@ -354,7 +371,14 @@ ggplot(ecdf_1, aes(x = wt71, y = cum_pct)) +
 
 ---
 
-## Your turn
+## Your turn 2
+
+<div class="countdown" id="timer_5f206c43" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+1. Create an unweighted ECDF examining the `smokeyrs` confounder for those that quit smoking and those that did not
+3. Create a weighted ECDF examining the `smokeyrs` confounder
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

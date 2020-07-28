@@ -2,10 +2,10 @@
 title: "Propensity Score Diagnostics"
 author: "Lucy D'Agostino McGowan"
 institute: "Wake Forest University"
-date: "2016/12/12 (updated: `r Sys.Date()`)"
+date: "2020-07-29 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
-    css: ["default", "lucy", "lucy-fonts", "my.css"]
+    css: ["default", "theme.css"]
     lib_dir: libs
     nature:
       highlightStyle: github
@@ -19,13 +19,15 @@ output:
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
+class: inverse
+
 ## Checking balance
 
 * Love plots (Standardized Mean Difference)
-* Box plots
 * ECDF plots
 
 ---
+class: inverse
 
 ## Standardized Mean Difference (SMD)
 
@@ -35,7 +37,7 @@ $$d = \frac{\bar{x}_{treatment}-\bar{x}_{control}}{\sqrt{\frac{s^2_{treatment}+s
 
 ## SMD in R
 
-1. Create a "design object" to incorporate the weights
+<span class = "num">1</span> <h3> &nbsp; &nbsp; &nbsp;  &nbsp; Create a "design object" to incorporate the weights </h3> 
 
 ```{r, message = FALSE, warning = FALSE}
 library(survey)
@@ -51,7 +53,8 @@ svy_des <- svydesign(
 
 ## SMD in R
 
-2. Calculate the _unweighted_ standardized mean differences
+<span class = "num">2</span> <h3> &nbsp; &nbsp; &nbsp;  &nbsp; Calculate the unweighted standardized mean differences </h3> 
+
 
 ```{r,  message = FALSE, warning = FALSE}
 library(tableone)
@@ -68,7 +71,7 @@ smd_table_unweighted <- CreateTableOne(
 
 ## SMD in R
 
-3. Calculate the _weighted_ standardized mean differences
+<span class = "num">3</span> <h3> &nbsp; &nbsp; &nbsp;  &nbsp; Calculate the weighted standardized mean differences </h3> 
 
 ```{r}
 smd_table <- svyCreateTableOne(
@@ -82,7 +85,7 @@ smd_table <- svyCreateTableOne(
 
 ## SMD in R
 
-3. Calculate the _weighted_ standardized mean differences
+<span class = "num">3</span> <h3> &nbsp; &nbsp; &nbsp;  &nbsp; Calculate the weighted standardized mean differences </h3> 
 
 ```{r}
 smd_table <- svyCreateTableOne( #<<
@@ -96,7 +99,8 @@ smd_table <- svyCreateTableOne( #<<
 
 ## SMD in R
 
-4. Stick these together in a data frame
+<span class = "num">4</span> <h3> &nbsp; &nbsp; &nbsp;  &nbsp;  Stick these together in a data frame </h3> 
+
 
 ```{r}
 plot_df <- data.frame(
@@ -110,7 +114,8 @@ plot_df <- data.frame(
 
 ## SMD in R
 
-4. Stick these together in a data frame
+<span class = "num">4</span> <h3> &nbsp; &nbsp; &nbsp;  &nbsp;  Stick these together in a data frame </h3> 
+
 
 ```{r}
 plot_df <- data.frame(
@@ -127,8 +132,8 @@ rownames(EXtractSMD(smd_table))
 
 ## SMD in R
 
+<span class = "num">4</span> <h3> &nbsp; &nbsp; &nbsp;  &nbsp;  Stick these together in a data frame </h3> 
 
-4. Stick these together in a data frame
 
 ```{r}
 plot_df <- data.frame(
@@ -145,8 +150,8 @@ as.numeric(ExtractSmd(smd_table_unweighted))
 
 ## SMD in R
 
+<span class = "num">4</span> <h3> &nbsp; &nbsp; &nbsp;  &nbsp;  Stick these together in a data frame </h3> 
 
-4. Stick these together in a data frame
 
 ```{r}
 plot_df <- data.frame(
@@ -163,8 +168,8 @@ as.numeric(ExtractSmd(smd_table))
 
 ## SMD in R
 
+<span class = "num">4</span> <h3> &nbsp; &nbsp; &nbsp;  &nbsp;  Stick these together in a data frame </h3> 
 
-4. Stick these together in a data frame
 
 ```{r}
 plot_df <- data.frame(
@@ -179,7 +184,8 @@ plot_df <- data.frame(
 
 ## SMD in R
 
-5. Plot them! (in a Love plot!)
+<span class = "num">5</span> <h3> &nbsp; &nbsp; &nbsp;  &nbsp;  Plot them! (in a Love plot!) </h3> 
+
 
 ```{r}
 ggplot(data = plot_df, 
@@ -194,7 +200,8 @@ ggplot(data = plot_df,
 
 ## SMD in R
 
-5. Plot them! (in a Love plot!)
+<span class = "num">5</span> <h3> &nbsp; &nbsp; &nbsp;  &nbsp;  Plot them! (in a Love plot!) </h3> 
+
 
 ```{r}
 ggplot(data = plot_df, #<<
@@ -210,7 +217,8 @@ ggplot(data = plot_df, #<<
 
 ## SMD in R
 
-5. Plot them! (in a Love plot!)
+<span class = "num">5</span> <h3> &nbsp; &nbsp; &nbsp;  &nbsp;  Plot them! (in a Love plot!) </h3> 
+
 
 ```{r}
 ggplot(data = plot_df,
@@ -226,7 +234,8 @@ ggplot(data = plot_df,
 
 ## SMD in R
 
-5. Plot them! (in a Love plot!)
+<span class = "num">5</span> <h3> &nbsp; &nbsp; &nbsp;  &nbsp;  Plot them! (in a Love plot!) </h3> 
+
 
 ```{r}
 ggplot(data = plot_df,
@@ -243,7 +252,8 @@ ggplot(data = plot_df,
 
 ## SMD in R
 
-5\. Plot them! (in a Love plot!)
+<span class = "num">5</span> <h3> &nbsp; &nbsp; &nbsp;  &nbsp;  Plot them! (in a Love plot!) </h3> 
+
 
 ```{r}
 ggplot(data = plot_df,
@@ -260,7 +270,8 @@ ggplot(data = plot_df,
 
 ## SMD in R
 
-<ol start="5"> Plot them! (in a Love plot!) </ol>
+
+<span class = "num">5</span> <h3> &nbsp; &nbsp; &nbsp;  &nbsp;  Plot them! (in a Love plot!) </h3> 
 
 ```{r}
 ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) +
@@ -334,13 +345,17 @@ ggplot(
 
 ---
 
-## Your turn!
+## Your turn 1
+
+`r countdown::countdown(minutes = 10)`
+
+1. Create a Love Plot for the propensity score weighting you created in the previous exercise
 
 ---
 
 ## ECDF
 
-* For continuous variables, it can be helpful to look at the _whole_ distribution pre and post-weighting rather than a single summary measure
+For continuous variables, it can be helpful to look at the _whole_ distribution pre and post-weighting rather than a single summary measure
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, eval = TRUE}
 ggplot(df, aes(x = wt71, group = qsmk, color = factor(qsmk))) +
@@ -402,4 +417,9 @@ ggplot(ecdf_1, aes(x = wt71, y = cum_pct)) +
 
 ---
 
-## Your turn
+## Your turn 2
+
+`r countdown::countdown(minutes = 10)`
+
+1. Create an unweighted ECDF examining the `smokeyrs` confounder for those that quit smoking and those that did not
+3. Create a weighted ECDF examining the `smokeyrs` confounder

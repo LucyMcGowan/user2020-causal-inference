@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Using Propensity Scores</title>
+    <title>Propensity Score Weighting</title>
     <meta charset="utf-8" />
     <meta name="author" content="Lucy D’Agostino McGowan" />
     <script src="libs/header-attrs-2.3/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/lucy.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/lucy-fonts.css" rel="stylesheet" />
+    <link href="libs/countdown-0.3.5/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown-0.3.5/countdown.js"></script>
+    <link rel="stylesheet" href="theme.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Using Propensity Scores
+# Propensity Score Weighting
 ### Lucy D’Agostino McGowan
 ### Wake Forest University
-### 2016/12/12 (updated: 2020-07-27)
+### 2020-07-29 (updated: 2020-07-28)
 
 ---
 
+
+class: inverse
 
 ## Propensity scores
 
@@ -30,6 +33,7 @@ class: center, middle, inverse, title-slide
 * ...
 
 ---
+class: inverse
 
 ## Propensity scores
 
@@ -40,33 +44,37 @@ class: center, middle, inverse, title-slide
 * ...
 
 ---
+class: inverse
 
 ## Target estimands
 
-* Average Treatment Effect (ATE)
-  * `\(w_{ATE} = \frac{Z_i}{p_i} + \frac{1-Z_i}{1 - p_i}\)`
+### Average Treatment Effect (ATE)
+
+`$$\Large w_{ATE} = \frac{Z_i}{p_i} + \frac{1-Z_i}{1 - p_i}$$`
 
 ---
+class: inverse
 
 ## Target estimands
 
-* Average Treatment Effect Among the Treated (ATT)
-  * `\(w_{ATT} = \frac{p_i Z_i}{p_i} + \frac{p_i (1-Z_i)}{1-p_i}\)`
+### Average Treatment Effect Among the Treated (ATT)
+`$$\Large w_{ATT} = \frac{p_i Z_i}{p_i} + \frac{p_i (1-Z_i)}{1-p_i}$$`
 --
 
-* Average Treatment Effect Among the Controls (ATC)
-  * `\(w_{ATC} = \frac{(1-p_i)Z_i}{p_i} + \frac{(1-epi)(1-Z_i)}{(1-p_i)}\)`
+### Average Treatment Effect Among the Controls (ATC)
+`$$\Large w_{ATC} = \frac{(1-p_i)Z_i}{p_i} + \frac{(1-p_i)(1-Z_i)}{(1-p_i)}$$`
 
 ---
+class: inverse
 
 ## Target estimands
 
-* Average Treatment Effect Among the Evenly Matchable (ATM)
-  * `\(w_{ATM} = \frac{\min \{p_i, 1-p_i\}}{z_ip_i + (1-Z_i)(1-p_i)}\)`
+### Average Treatment Effect Among the Evenly Matchable (ATM)
+`$$\Large w_{ATM} = \frac{\min \{p_i, 1-p_i\}}{z_ip_i + (1-Z_i)(1-p_i)}$$`
 --
 
-* Average Treatment Effect Among the Overlap Population
-  * `\(w_{ATO} = (1-p_i)Z_i + p_i(1-Z_i)\)`
+### Average Treatment Effect Among the Overlap Population
+`$$\Large w_{ATO} = (1-p_i)Z_i + p_i(1-Z_i)$$`
 
 ---
 
@@ -74,38 +82,67 @@ class: center, middle, inverse, title-slide
 
 ## Histogram of propensity scores
 
-![](04-using-pscores_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+![](04-pscore-weighting_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
 
 ---
 
 ## ATE
 
-![](04-using-pscores_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+![](04-pscore-weighting_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
 
+---
 
 ## ATT
 
 
-![](04-using-pscores_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+![](04-pscore-weighting_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
 
 
 ---
 
 ## ATC
 
-![](04-using-pscores_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+![](04-pscore-weighting_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
 
 ---
 
 ## ATM
 
-![](04-using-pscores_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+![](04-pscore-weighting_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
 
 ---
 
 ## ATO
 
-![](04-using-pscores_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+![](04-pscore-weighting_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+
+---
+
+## ATE in R
+
+* Average Treatment Effect (ATE)
+  * `\(w_{ATE} = \frac{Z_i}{p_i} + \frac{1-Z_i}{1 - p_i}\)`
+  
+
+```r
+df &lt;- propensity_model %&gt;% 
+  augment(type.predict = "response", data = nhefs_complete) %&gt;% 
+* mutate(w_ate = (qsmk / .fitted) +  ((1 - qsmk) / (1 - .fitted)))
+```
+
+---
+class: inverse
+
+## Your Turn
+
+<div class="countdown" id="timer_5f206b2c" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">10</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
+1. Using the propensity scores you created in the previous exercise, add the ATE weights to your data frame `df`
+
+2. Stretch: Using the same propensity scores, create ATT weights
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

@@ -2,10 +2,10 @@
 title: "Propensity Score Weighting"
 author: "Lucy D'Agostino McGowan"
 institute: "Wake Forest University"
-date: "2016/12/12 (updated: `r Sys.Date()`)"
+date: "2020-07-29 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
-    css: ["default", "lucy", "lucy-fonts", "my.css"]
+    css: ["default", "theme.css"]
     lib_dir: libs
     nature:
       highlightStyle: github
@@ -13,6 +13,8 @@ output:
       highlightSpans: true
       countIncrementalSlides: false
 ---
+
+class: inverse
 
 ## Propensity scores
 
@@ -23,6 +25,7 @@ output:
 * ...
 
 ---
+class: inverse
 
 ## Propensity scores
 
@@ -33,33 +36,37 @@ output:
 * ...
 
 ---
+class: inverse
 
 ## Target estimands
 
-* Average Treatment Effect (ATE)
-  * $w_{ATE} = \frac{Z_i}{p_i} + \frac{1-Z_i}{1 - p_i}$
+### Average Treatment Effect (ATE)
+
+$$\Large w_{ATE} = \frac{Z_i}{p_i} + \frac{1-Z_i}{1 - p_i}$$
 
 ---
+class: inverse
 
 ## Target estimands
 
-* Average Treatment Effect Among the Treated (ATT)
-  * $w_{ATT} = \frac{p_i Z_i}{p_i} + \frac{p_i (1-Z_i)}{1-p_i}$
+### Average Treatment Effect Among the Treated (ATT)
+$$\Large w_{ATT} = \frac{p_i Z_i}{p_i} + \frac{p_i (1-Z_i)}{1-p_i}$$
 --
 
-* Average Treatment Effect Among the Controls (ATC)
-  * $w_{ATC} = \frac{(1-p_i)Z_i}{p_i} + \frac{(1-p_i)(1-Z_i)}{(1-p_i)}$
+### Average Treatment Effect Among the Controls (ATC)
+$$\Large w_{ATC} = \frac{(1-p_i)Z_i}{p_i} + \frac{(1-p_i)(1-Z_i)}{(1-p_i)}$$
 
 ---
+class: inverse
 
 ## Target estimands
 
-* Average Treatment Effect Among the Evenly Matchable (ATM)
-  * $w_{ATM} = \frac{\min \{p_i, 1-p_i\}}{z_ip_i + (1-Z_i)(1-p_i)}$
+### Average Treatment Effect Among the Evenly Matchable (ATM)
+$$\Large w_{ATM} = \frac{\min \{p_i, 1-p_i\}}{z_ip_i + (1-Z_i)(1-p_i)}$$
 --
 
-* Average Treatment Effect Among the Overlap Population
-  * $w_{ATO} = (1-p_i)Z_i + p_i(1-Z_i)$
+### Average Treatment Effect Among the Overlap Population
+$$\Large w_{ATO} = (1-p_i)Z_i + p_i(1-Z_i)$$
 
 ---
 
@@ -223,7 +230,12 @@ df <- propensity_model %>%
 ```
 
 ---
+class: inverse
 
 ## Your Turn
 
+`r countdown::countdown(minutes = 10)`
 
+1. Using the propensity scores you created in the previous exercise, add the ATE weights to your data frame `df`
+
+2. Stretch: Using the same propensity scores, create ATT weights
