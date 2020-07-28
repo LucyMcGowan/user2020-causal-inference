@@ -5,7 +5,7 @@ institute: "Wake Forest University"
 date: "2016/12/12 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
-    css: ["default", "lucy", "lucy-fonts"]
+    css: ["default", "lucy", "lucy-fonts", "my.css"]
     lib_dir: libs
     nature:
       highlightStyle: github

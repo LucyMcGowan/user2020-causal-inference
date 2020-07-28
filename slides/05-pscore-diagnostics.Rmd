@@ -5,7 +5,7 @@ institute: "Wake Forest University"
 date: "2016/12/12 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
-    css: ["default", "lucy", "lucy-fonts"]
+    css: ["default", "lucy", "lucy-fonts", "my.css"]
     lib_dir: libs
     nature:
       highlightStyle: github
@@ -22,6 +22,7 @@ knitr::opts_chunk$set(eval = FALSE)
 ## Checking balance
 
 * Love plots (Standardized Mean Difference)
+* Box plots
 * ECDF plots
 
 ---
@@ -57,7 +58,7 @@ library(tableone)
 library(tidyverse)
 
 smd_table_unweighted <- CreateTableOne(
-  vars = c("var1", "var2", ...),
+  vars = c("confounder_1", "confounder_1", ...),
   strata = "exposure",
   data = df,
   test = FALSE)
@@ -71,7 +72,7 @@ smd_table_unweighted <- CreateTableOne(
 
 ```{r}
 smd_table <- svyCreateTableOne(
-  vars = c("var1", "var2", ...),
+  vars = c("confounder_1", "confounder_1", ...),
   strata = "exposure",
   data = svy_des, 
   test = FALSE)
@@ -85,7 +86,7 @@ smd_table <- svyCreateTableOne(
 
 ```{r}
 smd_table <- svyCreateTableOne( #<<
-  vars = c("var1", "var2", ...),
+  vars = c("confounder_1", "confounder_1", ...),
   strata = "exposure",
   data = svy_des, #<<
   test = FALSE)
@@ -109,10 +110,80 @@ plot_df <- data.frame(
 
 ## SMD in R
 
+4. Stick these together in a data frame
+
+```{r}
+plot_df <- data.frame(
+  var = rownames(ExtractSmd(smd_table)), #<<                        
+  Unadjusted = as.numeric(ExtractSmd(smd_table_unweighted)),                      
+  Weighted = as.numeric(ExtractSmd(smd_table))) %>%
+  pivot_longer(-var, names_to = "Method", values_to = "SMD")
+
+rownames(EXtractSMD(smd_table))
+#> [1] "confounder_1"  "confounder_2"
+```
+
+---
+
+## SMD in R
+
+
+4. Stick these together in a data frame
+
+```{r}
+plot_df <- data.frame(
+  var = rownames(ExtractSmd(smd_table)),                        
+  Unadjusted = as.numeric(ExtractSmd(smd_table_unweighted)),  #<<                    
+  Weighted = as.numeric(ExtractSmd(smd_table))) %>%
+  pivot_longer(-var, names_to = "Method", values_to = "SMD")
+
+as.numeric(ExtractSmd(smd_table_unweighted))
+#> [1] 0.160 0.177
+```
+
+---
+
+## SMD in R
+
+
+4. Stick these together in a data frame
+
+```{r}
+plot_df <- data.frame(
+  var = rownames(ExtractSmd(smd_table)),                        
+  Unadjusted = as.numeric(ExtractSmd(smd_table_unweighted)),                    
+  Weighted = as.numeric(ExtractSmd(smd_table))) %>% #<<
+  pivot_longer(-var, names_to = "Method", values_to = "SMD")
+
+as.numeric(ExtractSmd(smd_table))
+#> [1] 0.002 0.007
+```
+
+---
+
+## SMD in R
+
+
+4. Stick these together in a data frame
+
+```{r}
+plot_df <- data.frame(
+  var = rownames(ExtractSmd(smd_table)),                        
+  Unadjusted = as.numeric(ExtractSmd(smd_table_unweighted)),                    
+  Weighted = as.numeric(ExtractSmd(smd_table))) %>%
+  pivot_longer(-var, names_to = "Method", values_to = "SMD") #<<
+
+```
+
+---
+
+## SMD in R
+
 5. Plot them! (in a Love plot!)
 
 ```{r}
-ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) +
+ggplot(data = plot_df, 
+       mapping = aes(x = var, y = SMD, group = Method, color = Method)) +
   geom_line() +
   geom_point() + 
   geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  
@@ -126,7 +197,8 @@ ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = M
 5. Plot them! (in a Love plot!)
 
 ```{r}
-ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) + #<<
+ggplot(data = plot_df, #<<
+       mapping = aes(x = var, y = SMD, group = Method, color = Method)) + #<<
   geom_line() +
   geom_point() + 
   geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  
@@ -141,7 +213,8 @@ ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = M
 5. Plot them! (in a Love plot!)
 
 ```{r}
-ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) + 
+ggplot(data = plot_df,
+       mapping = aes(x = var, y = SMD, group = Method, color = Method)) + 
   geom_line() + #<<
   geom_point() + 
   geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  
@@ -156,7 +229,8 @@ ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = M
 5. Plot them! (in a Love plot!)
 
 ```{r}
-ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) + 
+ggplot(data = plot_df,
+       mapping = aes(x = var, y = SMD, group = Method, color = Method)) + 
   geom_line() +
   geom_point() + #<<
   geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  
@@ -169,10 +243,11 @@ ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = M
 
 ## SMD in R
 
-5. Plot them! (in a Love plot!)
+5\. Plot them! (in a Love plot!)
 
 ```{r}
-ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) + 
+ggplot(data = plot_df,
+       mapping = aes(x = var, y = SMD, group = Method, color = Method)) + 
   geom_line() +
   geom_point() + 
   geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  #<<
@@ -185,7 +260,7 @@ ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = M
 
 ## SMD in R
 
-5. Plot them! (in a Love plot!)
+<ol start="5"> Plot them! (in a Love plot!) </ol>
 
 ```{r}
 ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) +
@@ -265,41 +340,65 @@ ggplot(
 
 ## ECDF
 
-* For continuous variables, it can be helpful to look at the _whole_ distribution post-weighting rather than a single summary measure
+* For continuous variables, it can be helpful to look at the _whole_ distribution pre and post-weighting rather than a single summary measure
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, eval = TRUE}
+ggplot(df, aes(x = wt71, group = qsmk, color = factor(qsmk))) +
+  stat_ecdf() +
+  scale_color_manual("Quit smoking", values = c("#5154B8", "#5DB854"),
+                     labels = c("Yes", "No")) + 
+  xlab("Weight in Kg in 1971") + 
+  ylab("Proportion <= x") 
+```
+
 
 ---
 
-```{r, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, include = FALSE}
-library(rms)
-ecdf_1 <- Ecdf(df$wt71, group = df$qsmk)
-ecdf <- tibble::tibble(x = c(ecdf_1$`0`$x, ecdf_1$`1`$x), 
-               y = c(ecdf_1$`0`$y, ecdf_1$`1`$y),
-               group = c(
-                 rep("unexposed", length(ecdf_1$`0`$x)),
-                 rep("exposed", length(ecdf_1$`1`$x)))
-)
-ecdf_2 <- Ecdf(df$wt71, group = df$qsmk, weight = df$w_ate)
-ecdf_w <- tibble::tibble(x = c(ecdf_2$`0`$x, ecdf_2$`1`$x), 
-               y = c(ecdf_2$`0`$y, ecdf_2$`1`$y),
-               group = c(
-                 rep("unexposed", length(ecdf_2$`0`$x)),
-                 rep("exposed", length(ecdf_2$`1`$x)))
-)
+## Unweighted ECDF
 
-```
-
-```{r, eval = TRUE, echo = FALSE}
-ggplot(ecdf, aes(x = x, y = y, group = group, color = group)) +
-  geom_step() + 
-  xlab("Weight in Kg in 197") + 
-  ylab("Proportion <= x") + 
-  theme(legend.position = "none")
-ggplot(ecdf_w, aes(x = x, y = y, group = group, color = group)) +
-  geom_step() + 
+```{r}
+ggplot(df, aes(x = wt71, group = qsmk, color = factor(qsmk))) +
+  stat_ecdf() +
+  scale_color_manual("Quit smoking", values = c("#5154B8", "#5DB854"),
+                     labels = c("Yes", "No")) + 
   xlab("Weight in Kg in 1971") + 
-  ylab("Proportion <= x") + 
-  theme(legend.position = "none")
+  ylab("Proportion <= x") 
 ```
+
+---
+
+## Unweighted ECDF
+
+```{r, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
+ggplot(df, aes(x = wt71, group = qsmk, color = factor(qsmk))) +
+  stat_ecdf() +
+  scale_color_manual("Quit smoking", values = c("#5154B8", "#5DB854"),
+                     labels = c("Yes", "No")) + 
+  xlab("Weight in Kg in 1971") + 
+  ylab("Proportion <= x") 
+```
+
+
+---
+
+```{r}
+ecdf_1 <- df %>%
+  filter(qsmk == 1) %>%
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ecdf_0 <- df %>%
+  filter(qsmk == 0) %>%
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ggplot(ecdf_1, aes(x = wt71, y = cum_pct)) +
+  geom_line( color = "#5DB854") +
+  geom_line(data = ecdf_0, aes(x = wt71, y = cum_pct), color = "#5154B8") + 
+  xlab("Weight in Kg in 1971") + 
+  ylab("Proportion <= x") 
+```
+
 
 ---
 
