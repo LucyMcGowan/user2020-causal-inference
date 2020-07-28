@@ -2,10 +2,10 @@
 title: "Propensity Scores"
 author: "Lucy D'Agostino McGowan"
 institute: "Wake Forest University"
-date: "2016/12/12 (updated: `r Sys.Date()`)"
+date: "2020-07-29 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
-    css: ["default", "lucy", "lucy-fonts", "my.css"]
+    css: ["default", "theme.css"]
     lib_dir: libs
     nature:
       highlightStyle: github
@@ -14,6 +14,8 @@ output:
       countIncrementalSlides: false
 ---
 
+class: inverse
+
 ## Observational Studies
 
 **Goal**: To answer a research question
@@ -21,6 +23,7 @@ output:
 ![](img/obs-studies.png)
 
 ---
+class: inverse
 
 ## Observational Studies
 
@@ -29,6 +32,7 @@ output:
 ![](img/obs-studies-2.png)
 
 ---
+class: inverse
 
 ## ~~Observational Studies~~
 ### **Randomized Controlled Trial**
@@ -36,6 +40,7 @@ output:
 ![](img/randomized.png)
 
 ---
+class: inverse
 
 ## ~~Observational Studies~~
 ### **Randomized Controlled Trial**
@@ -43,25 +48,30 @@ output:
 ![](img/randomized-2.png)
 
 ---
+class: inverse
 
 ## Observational Studies
 
 ![](img/obs-studies-3.png)
 
 ---
+class: inverse
 
 ![](img/trt.png)
 
 ---
+class: inverse
 
 ![](img/trt-conf.png)
 ---
+class: inverse
 
 ## Confounding
 
 ![](img/conf-2.png)
 
 ---
+class: inverse
 
 ## Confounding
 
@@ -128,6 +138,7 @@ glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ...,
 ```
 
 ---
+class: inverse
 
 ## Propensity scores
 
@@ -135,8 +146,53 @@ glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ...,
 
 ---
 
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height = 5.5}
+library(cidata)
+library(ggdag)
+set.seed(1234)
+# set up DAG
+smk_wt_dag <- dagify(
+  # specify causes of quitting smoking and weight gain:
+  qsmk ~ sex + age + smokeyrs + wt71,
+  wt82_71 ~ sex + age + smokeyrs + wt71,
+  # specify causal question:
+  exposure = "qsmk", 
+  outcome = "wt82_71",
+  # set up labels:
+  # here, I'll use the same variable names as the data set, but I'll label them
+  # with clearer names
+  labels = c(
+    # causal question
+    "qsmk" = "quit\nsmoking (qsmk)",
+    "wt82_71" = "change in\nweight",
+    
+    # demographics
+    "age" = "age",
+    "sex" = "sex",
+    
+    # health
+    "wt71" = "baseline\nweight (wt71)",
+    
+    # smoking history
+    "smokeyrs" = "yrs of\nsmoking (smokeyrs)"
+  )
+) %>% 
+  tidy_dagitty()
+
+smk_wt_dag %>% 
+  ggdag(text = FALSE, use_labels = "label") 
+```
+
+---
+
+class: inverse
+
 ## Your turn
 
+`r countdown::countdown(minutes = 10)`
+
+1. Using the **confounders** identified in the previous DAG, fit a propensity score model for `qsmk`
+2. Stretch: Create two histograms, one of the propensity scores for those that quit smoking and one for those that do not
 
 
 
