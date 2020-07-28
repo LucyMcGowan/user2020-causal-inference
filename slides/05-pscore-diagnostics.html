@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Propensity Scores</title>
+    <title>Propensity Score Diagnostics</title>
     <meta charset="utf-8" />
     <meta name="author" content="Lucy D’Agostino McGowan" />
     <script src="libs/header-attrs-2.3/header-attrs.js"></script>
@@ -13,66 +13,227 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Propensity Scores
+# Propensity Score Diagnostics
 ### Lucy D’Agostino McGowan
 ### Wake Forest University
-### 2016/12/12 (updated: 2020-07-24)
+### 2016/12/12 (updated: 2020-07-27)
 
 ---
 
 
-## Propensity Scores
 
-Rosenbaum and Rubin showed in observational studies, conditioning on **propensity scores** can lead to unbiased estimates of the exposure effect
 
-1. There are no unmeasured confounders
-2. Every subject has a nonzero probability of receiving either exposure
 
----
+## Checking balance
 
-## Propensity Scores
-
-* Fit a **logistic regression** predicting exposure using known covariates
-
-`$$Pr(exposure = 1) = \frac{1}{1+\exp(-X\beta)}$$`
-
-* Each individuals' predicted values are the **propensity scores**
+* Love plots (Standardized Mean Difference)
+* ECDF plots
 
 ---
 
-## Propensity scores
+## Standardized Mean Difference (SMD)
+
+`$$d = \frac{\bar{x}_{treatment}-\bar{x}_{control}}{\sqrt{\frac{s^2_{treatment}+s^2_{control}}{2}}}$$`
+
+---
+
+## SMD in R
+
+1. Create a "design object" to incorporate the weights
 
 
 ```r
-glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ..., 
-    data = df,
-    family = binomial)
+library(survey)
+
+svy_des &lt;- svydesign(
+  ids = ~ 1,
+  data = df,
+  weights = ~ wts
+)
 ```
 
 ---
 
-## Propensity scores
+## SMD in R
+
+2. Calculate the _unweighted_ standardized mean differences
 
 
 ```r
-glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ..., 
-    data = df,
-    family = binomial)%&gt;%
-*predict(type = "response")
+library(tableone)
+library(tidyverse)
+
+smd_table_unweighted &lt;- CreateTableOne(
+  vars = c("var1", "var2", ...),
+  strata = "exposure",
+  data = df,
+  test = FALSE)
 ```
 
 ---
 
-## Propensity scores
+## SMD in R
+
+3. Calculate the _weighted_ standardized mean differences
 
 
 ```r
-p &lt;- glm(exposure ~ smoker + cowboy_hat + sick . . ., 
-         data = df,
-         family = binomial) %&gt;%
-     predict(type = "response")
+smd_table &lt;- svyCreateTableOne(
+  vars = c("var1", "var2", ...),
+  strata = "exposure",
+  data = svy_des, 
+  test = FALSE)
 ```
 
+---
+
+## SMD in R
+
+3. Calculate the _weighted_ standardized mean differences
+
+
+```r
+*smd_table &lt;- svyCreateTableOne(
+  vars = c("var1", "var2", ...),
+  strata = "exposure",
+* data = svy_des,
+  test = FALSE)
+```
+
+---
+
+## SMD in R
+
+4. Stick these together in a data frame
+
+
+```r
+plot_df &lt;- data.frame(
+  var = rownames(ExtractSmd(smd_table)),                        
+  Unadjusted = as.numeric(ExtractSmd(smd_table_unweighted)),                      
+  Weighted = as.numeric(ExtractSmd(smd_table))) %&gt;%
+  pivot_longer(-var, names_to = "Method", values_to = "SMD")
+```
+
+---
+
+## SMD in R
+
+5. Plot them! (in a Love plot!)
+
+
+```r
+ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) +
+  geom_line() +
+  geom_point() + 
+  geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  
+  coord_flip()
+```
+
+---
+
+## SMD in R
+
+5. Plot them! (in a Love plot!)
+
+
+```r
+*ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) +
+  geom_line() +
+  geom_point() + 
+  geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  
+  coord_flip()
+```
+
+---
+
+
+## SMD in R
+
+5. Plot them! (in a Love plot!)
+
+
+```r
+ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) + 
+* geom_line() +
+  geom_point() + 
+  geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  
+  coord_flip()
+```
+
+---
+
+
+## SMD in R
+
+5. Plot them! (in a Love plot!)
+
+
+```r
+ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) + 
+  geom_line() +
+* geom_point() +
+  geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  
+  coord_flip()
+```
+
+
+---
+
+
+## SMD in R
+
+5. Plot them! (in a Love plot!)
+
+
+```r
+ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) + 
+  geom_line() +
+  geom_point() + 
+* geom_hline(yintercept = 0.1, color = "black", size = 0.1) +
+  coord_flip()
+```
+
+
+---
+
+
+## SMD in R
+
+5. Plot them! (in a Love plot!)
+
+
+```r
+ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) +
+  geom_line() +
+  geom_point() + 
+  geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  
+* coord_flip()
+```
+
+---
+
+## Love plot
+
+![](05-pscore-diagnostics_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+
+---
+
+## Your turn!
+
+---
+
+## ECDF
+
+* For continuous variables, it can be helpful to look at the _whole_ distribution post-weighting rather than a single summary measure
+
+---
+
+
+
+![](05-pscore-diagnostics_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;![](05-pscore-diagnostics_files/figure-html/unnamed-chunk-15-2.png)&lt;!-- --&gt;
+
+##
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

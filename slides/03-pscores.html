@@ -99,9 +99,8 @@ Rosenbaum and Rubin showed in observational studies, conditioning on **propensit
 
 
 ```r
-glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ..., 
-    data = df,
-    family = binomial)
+library(tidyverse)
+library(broom)
 ```
 
 ---
@@ -112,8 +111,7 @@ glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ...,
 ```r
 glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ..., 
     data = df,
-    family = binomial) %&gt;%
-*predict(type = "response")
+    family = binomial())
 ```
 
 ---
@@ -122,10 +120,22 @@ glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ...,
 
 
 ```r
-p &lt;- glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ..., 
-         data = df,
-         family = binomial) %&gt;%
-     predict(type = "response")
+glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ..., 
+    data = df,
+    family = binomial()) %&gt;%
+  augment(type.predict = "response", data = df) 
+```
+
+---
+
+## Propensity scores
+
+
+```r
+glm(exposure ~ confounder_1 + confounder_2 + confounder_3 + ..., 
+    data = df,
+    family = binomial()) %&gt;%
+* augment(type.predict = "response", data = df)
 ```
 
 ---

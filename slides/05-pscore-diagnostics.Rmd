@@ -1,0 +1,306 @@
+---
+title: "Propensity Score Diagnostics"
+author: "Lucy D'Agostino McGowan"
+institute: "Wake Forest University"
+date: "2016/12/12 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: ["default", "lucy", "lucy-fonts"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      highlightSpans: true
+      countIncrementalSlides: false
+---
+
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+## Checking balance
+
+* Love plots (Standardized Mean Difference)
+* ECDF plots
+
+---
+
+## Standardized Mean Difference (SMD)
+
+$$d = \frac{\bar{x}_{treatment}-\bar{x}_{control}}{\sqrt{\frac{s^2_{treatment}+s^2_{control}}{2}}}$$
+
+---
+
+## SMD in R
+
+1. Create a "design object" to incorporate the weights
+
+```{r, message = FALSE, warning = FALSE}
+library(survey)
+
+svy_des <- svydesign(
+  ids = ~ 1,
+  data = df,
+  weights = ~ wts
+)
+```
+
+---
+
+## SMD in R
+
+2. Calculate the _unweighted_ standardized mean differences
+
+```{r,  message = FALSE, warning = FALSE}
+library(tableone)
+library(tidyverse)
+
+smd_table_unweighted <- CreateTableOne(
+  vars = c("var1", "var2", ...),
+  strata = "exposure",
+  data = df,
+  test = FALSE)
+```
+
+---
+
+## SMD in R
+
+3. Calculate the _weighted_ standardized mean differences
+
+```{r}
+smd_table <- svyCreateTableOne(
+  vars = c("var1", "var2", ...),
+  strata = "exposure",
+  data = svy_des, 
+  test = FALSE)
+```
+
+---
+
+## SMD in R
+
+3. Calculate the _weighted_ standardized mean differences
+
+```{r}
+smd_table <- svyCreateTableOne( #<<
+  vars = c("var1", "var2", ...),
+  strata = "exposure",
+  data = svy_des, #<<
+  test = FALSE)
+```
+
+---
+
+## SMD in R
+
+4. Stick these together in a data frame
+
+```{r}
+plot_df <- data.frame(
+  var = rownames(ExtractSmd(smd_table)),                        
+  Unadjusted = as.numeric(ExtractSmd(smd_table_unweighted)),                      
+  Weighted = as.numeric(ExtractSmd(smd_table))) %>%
+  pivot_longer(-var, names_to = "Method", values_to = "SMD")
+```
+
+---
+
+## SMD in R
+
+5. Plot them! (in a Love plot!)
+
+```{r}
+ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) +
+  geom_line() +
+  geom_point() + 
+  geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  
+  coord_flip()
+```
+
+---
+
+## SMD in R
+
+5. Plot them! (in a Love plot!)
+
+```{r}
+ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) + #<<
+  geom_line() +
+  geom_point() + 
+  geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  
+  coord_flip()
+```
+
+---
+
+
+## SMD in R
+
+5. Plot them! (in a Love plot!)
+
+```{r}
+ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) + 
+  geom_line() + #<<
+  geom_point() + 
+  geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  
+  coord_flip()
+```
+
+---
+
+
+## SMD in R
+
+5. Plot them! (in a Love plot!)
+
+```{r}
+ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) + 
+  geom_line() +
+  geom_point() + #<<
+  geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  
+  coord_flip()
+```
+
+
+---
+
+
+## SMD in R
+
+5. Plot them! (in a Love plot!)
+
+```{r}
+ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) + 
+  geom_line() +
+  geom_point() + 
+  geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  #<<
+  coord_flip()
+```
+
+
+---
+
+
+## SMD in R
+
+5. Plot them! (in a Love plot!)
+
+```{r}
+ggplot(data = plot_df, mapping = aes(x = var, y = SMD, group = Method, color = Method)) +
+  geom_line() +
+  geom_point() + 
+  geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  
+  coord_flip() #<<
+```
+
+---
+
+## Love plot
+
+```{r, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
+library(survey)
+library(tableone)
+library(tidyverse)
+library(broom)
+# remotes::install_github("malcolmbarrett/cidata")
+library(cidata)
+
+propensity_model <- glm(
+  qsmk ~ sex + 
+    race + age + I(age^2) + education + 
+    smokeintensity + I(smokeintensity^2) + 
+    smokeyrs + I(smokeyrs^2) + exercise + active + 
+    wt71 + I(wt71^2), 
+  family = binomial(), 
+  data = nhefs_complete
+)
+
+df <- propensity_model %>% 
+  augment(type.predict = "response", data = nhefs_complete) %>% 
+  mutate(w_ate = 1 / ifelse(qsmk == 0, 1 - .fitted, .fitted))
+
+svy_des <- svydesign(
+  ids = ~ 1,
+  data = df,
+  weights = ~ w_ate)
+
+smd_table_unweighted <- CreateTableOne(
+  vars = c("sex", "race", "age", "education", "smokeintensity", "smokeyrs", 
+           "exercise", "active", "wt71"),
+  strata = "qsmk",
+  data = df,
+  test = FALSE)
+
+smd_table <- svyCreateTableOne(
+  vars = c("sex", "race", "age", "education", "smokeintensity", "smokeyrs", 
+           "exercise", "active", "wt71"),
+  strata = "qsmk",
+  data = svy_des,
+  test = FALSE)
+
+
+plot_df <- data.frame(
+  var = rownames(ExtractSmd(smd_table)),                        
+  Unadjusted = as.numeric(ExtractSmd(smd_table_unweighted)),                      
+  Weighted = as.numeric(ExtractSmd(smd_table))) %>%
+  pivot_longer(-var, names_to = "Method", values_to = "SMD")
+
+ggplot(
+  data = plot_df,
+  mapping = aes(x = var, y = SMD, group = Method, color = Method)
+) +
+  geom_line() +
+  geom_point() + 
+  geom_hline(yintercept = 0.1, color = "black", size = 0.1) +  
+  coord_flip()
+```
+
+---
+
+## Your turn!
+
+---
+
+## ECDF
+
+* For continuous variables, it can be helpful to look at the _whole_ distribution post-weighting rather than a single summary measure
+
+---
+
+```{r, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE, include = FALSE}
+library(rms)
+ecdf_1 <- Ecdf(df$wt71, group = df$qsmk)
+ecdf <- tibble::tibble(x = c(ecdf_1$`0`$x, ecdf_1$`1`$x), 
+               y = c(ecdf_1$`0`$y, ecdf_1$`1`$y),
+               group = c(
+                 rep("unexposed", length(ecdf_1$`0`$x)),
+                 rep("exposed", length(ecdf_1$`1`$x)))
+)
+ecdf_2 <- Ecdf(df$wt71, group = df$qsmk, weight = df$w_ate)
+ecdf_w <- tibble::tibble(x = c(ecdf_2$`0`$x, ecdf_2$`1`$x), 
+               y = c(ecdf_2$`0`$y, ecdf_2$`1`$y),
+               group = c(
+                 rep("unexposed", length(ecdf_2$`0`$x)),
+                 rep("exposed", length(ecdf_2$`1`$x)))
+)
+
+```
+
+```{r, eval = TRUE, echo = FALSE}
+ggplot(ecdf, aes(x = x, y = y, group = group, color = group)) +
+  geom_step() + 
+  xlab("Weight in Kg in 197") + 
+  ylab("Proportion <= x") + 
+  theme(legend.position = "none")
+ggplot(ecdf_w, aes(x = x, y = y, group = group, color = group)) +
+  geom_step() + 
+  xlab("Weight in Kg in 1971") + 
+  ylab("Proportion <= x") + 
+  theme(legend.position = "none")
+```
+
+---
+
+## Your turn
