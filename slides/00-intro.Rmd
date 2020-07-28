@@ -1,6 +1,6 @@
 ---
 title: "Causal Inference in R: Introduction"
-date: "`r Sys.Date()`"
+date: "2020-07-29 (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     css: ["default", "theme.css"]

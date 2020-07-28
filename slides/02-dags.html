@@ -3,9 +3,10 @@
   <head>
     <title>Causal Diagrams in R</title>
     <meta charset="utf-8" />
-    <meta name="date" content="2020-07-27" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/countdown/countdown.css" rel="stylesheet" />
+    <script src="libs/countdown/countdown.js"></script>
     <link rel="stylesheet" href="theme.css" type="text/css" />
   </head>
   <body>
@@ -13,7 +14,7 @@
 class: center, middle, inverse, title-slide
 
 # Causal Diagrams in R
-### 2020-07-27
+### 2020-07-29 (updated: 2020-07-28)
 
 ---
 
@@ -137,11 +138,16 @@ dagify(
 
 ---
 
-## Your Turn 1 (**`exercises.Rmd`**)
+## Your Turn 1 (**`02-dags-exercises.Rmd`**)
 
 ### Specify a DAG with `dagify()`. Write your assumption that `smoking` causes `cancer` as a formula. 
 ### We're going to assume that coffee does not cause cancer, so there's no formula for that. But we still need to declare our causal question. Specify "coffee" as the exposure and "cancer" as the outcome (both in quotations marks).
 ### Plot the DAG using `ggdag()`
+
+<div class="countdown" id="timer_5f20b672" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
 ---
 
 ## Your Turn 1 (`02-dags-exercises.Rmd`)
@@ -219,6 +225,10 @@ ggdag_paths(smk_wt_dag)
 ### Call `tidy_dagitty()` on `coffee_cancer_dag` to create a tidy DAG, then pass the results to `dag_paths()`. What's different about these data?
 ### Plot the open paths with `ggdag_paths()`. (Just give it `coffee_cancer_dag` rather than using `dag_paths()`; the quick plot function will do that for you.) Remember, since we assume there is *no* causal path from coffee to lung cancer, any open paths must be confounding pathways. 
 
+<div class="countdown" id="timer_5f20b6db" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+
 ---
 
 ## Your Turn 2
@@ -239,11 +249,11 @@ coffee_cancer_dag %&gt;%
 ## # A tibble: 5 x 11
 ##   set   name      x     y direction to     xend  yend
 ##   &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 1     addi…  22.4 10.9  -&gt;        coff…  22.3  9.70
-## 2 1     addi…  22.4 10.9  -&gt;        smok…  22.4 12.2 
-## 3 1     smok…  22.4 12.2  -&gt;        canc…  22.5 13.5 
-## 4 1     coff…  22.3  9.70 &lt;NA&gt;      &lt;NA&gt;   NA   NA   
-## 5 1     canc…  22.5 13.5  &lt;NA&gt;      &lt;NA&gt;   NA   NA   
+## 1 1     addi…  25.7  28.1 -&gt;        coff…  24.5  27.9
+## 2 1     addi…  25.7  28.1 -&gt;        smok…  27.1  28.2
+## 3 1     smok…  27.1  28.2 -&gt;        canc…  28.3  28.3
+## 4 1     coff…  24.5  27.9 &lt;NA&gt;      &lt;NA&gt;   NA    NA  
+## 5 1     canc…  28.3  28.3 &lt;NA&gt;      &lt;NA&gt;   NA    NA  
 ## # … with 3 more variables: circular &lt;lgl&gt;, label &lt;chr&gt;,
 ## #   path &lt;chr&gt;
 ```
@@ -301,6 +311,10 @@ ggdag_adjustment_set(smk_wt_dag)
 
 #### Use `ggdag_adjustment_set()` to visualize the adjustment sets. Add the arguments `use_labels = "label"` and `text = FALSE`.
 #### Write an R formula for each adjustment set, as you might if you were fitting a model in `lm()` or `glm()`
+
+<div class="countdown" id="timer_5f20b6fd" style="right:0;bottom:0;" data-warnwhen="0">
+<code class="countdown-time"><span class="countdown-digits minutes">03</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
 
 ---
 
