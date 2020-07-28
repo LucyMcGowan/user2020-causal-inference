@@ -113,7 +113,7 @@ dagify(
 # Step 1: Specify your DAG
 
 
-&lt;img src="dags_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="02-dags_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -133,7 +133,7 @@ dagify(
 # Step 1: Specify your DAG
 
 
-&lt;img src="dags_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="02-dags_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -144,7 +144,7 @@ dagify(
 ### Plot the DAG using `ggdag()`
 ---
 
-## Your Turn 1 (`exercises.Rmd`)
+## Your Turn 1 (`02-dags-exercises.Rmd`)
 
 
 ```r
@@ -171,7 +171,7 @@ coffee_cancer_dag &lt;- dagify(
 ggdag(coffee_cancer_dag)
 ```
 
-&lt;img src="dags_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="02-dags_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -210,7 +210,7 @@ ggdag_paths(smk_wt_dag)
 
 ---
 
-&lt;img src="dags_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="02-dags_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -256,7 +256,7 @@ coffee_cancer_dag %&gt;%
   ggdag_paths()
 ```
 
-&lt;img src="dags_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="02-dags_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -291,7 +291,7 @@ ggdag_adjustment_set(smk_wt_dag)
 
 ---
 
-&lt;img src="dags_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="02-dags_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -317,7 +317,7 @@ ggdag_adjustment_set(
 
 ---
 
-&lt;img src="dags_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="02-dags_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -331,7 +331,7 @@ cancer ~ coffee + smoking
 
 ---
 
-class: inverse, center
+class: inverse
 
 # Resources: ggdag vignettes
 ## [An Introduction to ggdag](https://ggdag.malco.io/articles/intro-to-ggdag.html)
