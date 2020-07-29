@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-## user2020 Causal Inference Workshop
+## user2020\! Causal Inference in R Workshop
 
 ### Slides
 
@@ -17,3 +17,27 @@
     Scores](https://user2020.lucymcgowan.com/05-pscore-diagnostics.html)
   - [06 Fitting the outcome
     model](https://user2020.lucymcgowan.com/06-outcome-model.html)
+
+### Installing materials locally
+
+We will be using RStudio Cloud for the workshop, but if you would like
+to install the required packages and course materials, we have an R
+package called
+{[useRcausal2020](https://github.com/malcolmbarrett/useRcausal2020)} to
+help you do that\! You can install
+{[useRcausal2020](https://github.com/malcolmbarrett/useRcausal2020)}
+from GitHub with:
+
+``` r
+install.packages("remotes")
+remotes::install_github("malcolmbarrett/useRcausal2020")
+```
+
+Once you’ve installed the package, install the workshop with
+
+``` r
+useRcausal2020::install_workshop("path/to/your/computer")
+```
+
+Replace “path/to/your/computer” with where on your computer you want the
+workshop installed.
