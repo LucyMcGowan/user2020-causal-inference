@@ -14,6 +14,9 @@ output:
       countIncrementalSlides: false
 ---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.align = "center", dpi = 320, fig.height = 4)
+```
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(eval = FALSE)
@@ -31,7 +34,7 @@ class: inverse
 
 ## Standardized Mean Difference (SMD)
 
-$$d = \frac{\bar{x}_{treatment}-\bar{x}_{control}}{\sqrt{\frac{s^2_{treatment}+s^2_{control}}{2}}}$$
+$$\LARGE d = \frac{\bar{x}_{treatment}-\bar{x}_{control}}{\sqrt{\frac{s^2_{treatment}+s^2_{control}}{2}}}$$
 
 ---
 
@@ -384,6 +387,32 @@ ggplot(df, aes(x = wt71, group = qsmk, color = factor(qsmk))) +
 
 ## Unweighted ECDF
 
+```{r}
+ggplot(df, aes(x = wt71, group = qsmk, color = factor(qsmk))) + #<<
+  stat_ecdf() +
+  scale_color_manual("Quit smoking", values = c("#5154B8", "#5DB854"),
+                     labels = c("Yes", "No")) + 
+  xlab("Weight in Kg in 1971") + 
+  ylab("Proportion <= x") 
+```
+
+---
+
+## Unweighted ECDF
+
+```{r}
+ggplot(df, aes(x = wt71, group = qsmk, color = factor(qsmk))) +
+  stat_ecdf() + #<<
+  scale_color_manual("Quit smoking", values = c("#5154B8", "#5DB854"),
+                     labels = c("Yes", "No")) + 
+  xlab("Weight in Kg in 1971") + 
+  ylab("Proportion <= x") 
+```
+
+---
+
+## Unweighted ECDF
+
 ```{r, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
 ggplot(df, aes(x = wt71, group = qsmk, color = factor(qsmk))) +
   stat_ecdf() +
@@ -395,6 +424,8 @@ ggplot(df, aes(x = wt71, group = qsmk, color = factor(qsmk))) +
 
 
 ---
+
+## Weighted  ECDF 
 
 ```{r}
 ecdf_1 <- df %>%
@@ -414,6 +445,185 @@ ggplot(ecdf_1, aes(x = wt71, y = cum_pct)) +
   ylab("Proportion <= x") 
 ```
 
+---
+
+
+## Weighted  ECDF 
+
+```{r}
+ecdf_1 <- df %>%
+  filter(qsmk == 1) %>% #<<
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ecdf_0 <- df %>%
+  filter(qsmk == 0) %>%
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ggplot(ecdf_1, aes(x = wt71, y = cum_pct)) +
+  geom_line( color = "#5DB854") +
+  geom_line(data = ecdf_0, aes(x = wt71, y = cum_pct), color = "#5154B8") + 
+  xlab("Weight in Kg in 1971") + 
+  ylab("Proportion <= x") 
+```
+
+---
+
+
+## Weighted  ECDF 
+
+```{r}
+ecdf_1 <- df %>%
+  filter(qsmk == 1) %>%
+  arrange(wt71) %>% #<<
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ecdf_0 <- df %>%
+  filter(qsmk == 0) %>%
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ggplot(ecdf_1, aes(x = wt71, y = cum_pct)) +
+  geom_line( color = "#5DB854") +
+  geom_line(data = ecdf_0, aes(x = wt71, y = cum_pct), color = "#5154B8") + 
+  xlab("Weight in Kg in 1971") + 
+  ylab("Proportion <= x") 
+```
+
+---
+
+
+## Weighted  ECDF 
+
+```{r}
+ecdf_1 <- df %>%
+  filter(qsmk == 1) %>%
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate)) #<<
+
+ecdf_0 <- df %>%
+  filter(qsmk == 0) %>%
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ggplot(ecdf_1, aes(x = wt71, y = cum_pct)) +
+  geom_line( color = "#5DB854") +
+  geom_line(data = ecdf_0, aes(x = wt71, y = cum_pct), color = "#5154B8") + 
+  xlab("Weight in Kg in 1971") + 
+  ylab("Proportion <= x") 
+```
+
+---
+
+## Weighted  ECDF 
+
+```{r}
+ecdf_1 <- df %>%
+  filter(qsmk == 1) %>%
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ecdf_0 <- df %>% #<<
+  filter(qsmk == 0) %>% #<<
+  arrange(wt71) %>% #<<
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate)) #<<
+
+ggplot(ecdf_1, aes(x = wt71, y = cum_pct)) +
+  geom_line( color = "#5DB854") +
+  geom_line(data = ecdf_0, aes(x = wt71, y = cum_pct), color = "#5154B8") + 
+  xlab("Weight in Kg in 1971") + 
+  ylab("Proportion <= x") 
+```
+
+---
+
+## Weighted  ECDF 
+
+```{r}
+ecdf_1 <- df %>%
+  filter(qsmk == 1) %>%
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ecdf_0 <- df %>%
+  filter(qsmk == 0) %>%
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ggplot(ecdf_1, aes(x = wt71, y = cum_pct)) + #<<
+  geom_line( color = "#5DB854") +
+  geom_line(data = ecdf_0, aes(x = wt71, y = cum_pct), color = "#5154B8") + 
+  xlab("Weight in Kg in 1971") + 
+  ylab("Proportion <= x") 
+```
+
+---
+
+
+## Weighted  ECDF 
+
+```{r}
+ecdf_1 <- df %>%
+  filter(qsmk == 1) %>%
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ecdf_0 <- df %>%
+  filter(qsmk == 0) %>%
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ggplot(ecdf_1, aes(x = wt71, y = cum_pct)) +
+  geom_line( color = "#5DB854") + #<<
+  geom_line(data = ecdf_0, aes(x = wt71, y = cum_pct), color = "#5154B8") + 
+  xlab("Weight in Kg in 1971") + 
+  ylab("Proportion <= x") 
+```
+
+---
+
+
+## Weighted  ECDF 
+
+```{r}
+ecdf_1 <- df %>%
+  filter(qsmk == 1) %>%
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ecdf_0 <- df %>%
+  filter(qsmk == 0) %>%
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ggplot(ecdf_1, aes(x = wt71, y = cum_pct)) +
+  geom_line( color = "#5DB854") +
+  geom_line(data = ecdf_0, aes(x = wt71, y = cum_pct), color = "#5154B8") +  #<<
+  xlab("Weight in Kg in 1971") + 
+  ylab("Proportion <= x") 
+```
+---
+
+## Weighted  ECDF 
+
+```{r, echo = FALSE, eval = TRUE}
+ecdf_1 <- df %>%
+  filter(qsmk == 1) %>%
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ecdf_0 <- df %>%
+  filter(qsmk == 0) %>%
+  arrange(wt71) %>%
+  mutate(cum_pct = cumsum(w_ate) / sum(w_ate))
+
+ggplot(ecdf_1, aes(x = wt71, y = cum_pct)) +
+  geom_line( color = "#5DB854") +
+  geom_line(data = ecdf_0, aes(x = wt71, y = cum_pct), color = "#5154B8") + 
+  xlab("Weight in Kg in 1971") + 
+  ylab("Proportion <= x") 
+```
 
 ---
 
