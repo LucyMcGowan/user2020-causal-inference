@@ -14,6 +14,10 @@ output:
       countIncrementalSlides: false
 ---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, fig.align = "center", dpi = 320, fig.height = 4)
+```
+
 class: inverse
 
 ## Observational Studies
